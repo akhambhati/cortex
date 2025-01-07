@@ -1,0 +1,2 @@
+created: $(date "+%Y-%m-%dT%H:%M:%S%z")
+modified: $(date "+%Y-%m-%dT%H:%M:%S%z")
