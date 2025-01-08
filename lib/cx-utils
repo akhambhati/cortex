@@ -57,7 +57,7 @@ function cx.getNodes(){
 # Get the Title of the node (first #)
 #######################################
 function cx.grepTitle() {
-	title=$(grep -E '^[^#]*#[^#]*$' $1)
+	title=$(grep -E '^# ' $1)
 	echo "$title" | sed 's/^[^[:alnum:]]*//'
 }
 
@@ -78,7 +78,6 @@ function cx.aggMeta(){
 		done
 		list=$(for fn in $(cx.getNodes); do (cat "$CX_PATH/$fn/$CX_READ" | cx.grepTitle | sed "s,\(.*\),[\1](${CX_PATH}\/${fn}),"); done)
 		pstring+=" <(echo '${list[@]}')"
-			
 		eval "$pstring"
 	fi
 }
