@@ -174,7 +174,7 @@ function cx.nodeEdit() {
 			echo "Node ($SEL_NODE) was updated."
 			cx.updateMetadata $SEL_NODE modified $(CX_MODIFIED)
 			if [[ -e $2 ]]; then
-				cp "$2" "$SEL_NODE_PATH"
+				mv "$2" "$SEL_NODE_PATH"
 			fi
 		fi
 	fi
