@@ -155,8 +155,12 @@ function cx.nodeEdit() {
 		cp -r "$CX_TEMPLATES/_0" "$SEL_NODE_PATH"
 		cx.templateFill "$SEL_META"
 	fi
-
-	text=${@:2}
+  if [[ -e $2 ]]; then
+	  fn=$(basename $2)	
+		text="\\n\\n![${@:3}]($fn)"
+	else
+		text=${@:2}
+	fi
 	initial_checksum=$(md5sum -b $SEL_README)
 	vim -c "norm GA$(echo -e $text)" \
 	  	-c "startinsert" $SEL_README
@@ -169,6 +173,9 @@ function cx.nodeEdit() {
 		if [ "$initial_checksum" != "$modified_checksum" ]; then
 			echo "Node ($SEL_NODE) was updated."
 			cx.updateMetadata $SEL_NODE modified $(CX_MODIFIED)
+			if [[ -e $2 ]]; then
+				cp "$2" "$SEL_NODE_PATH"
+			fi
 		fi
 	fi
 }
