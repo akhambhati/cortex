@@ -156,8 +156,10 @@ function cx.nodeEdit() {
 		cx.templateFill "$SEL_META"
 	fi
 
+	text=${@:2}
 	initial_checksum=$(md5sum -b $SEL_README)
-	vim -c "+norm G$" "+startinsert!" $SEL_README
+	vim -c "norm GA$(echo -e $text)" \
+	  	-c "startinsert" $SEL_README
 	modified_checksum=$(md5sum -b $SEL_README)
 
 	if [[ -z $(cat $SEL_README | sed -E 's/(\#)|[[:space:]]//g') ]]; then
