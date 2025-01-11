@@ -135,6 +135,8 @@ function cx.nodeDel() {
 		echo "Remove Node ($SEL_NODE)?"
 		rm -rdI $SEL_NODE_PATH
 	fi
+
+	cx.updateGit
 }
 
 
@@ -178,6 +180,8 @@ function cx.nodeEdit() {
 			fi
 		fi
 	fi
+
+	cx.updateGit
 }
 
 #######################################
@@ -217,6 +221,8 @@ function cx.updateMetadata() {
 	if [ "$2" == "modified" ]; then
 		yq -i "$MDATE" $CX_PATH/$CX_META
 	fi
+
+	cx.updateGit
 }
 
 #######################################
@@ -234,4 +240,19 @@ function cx.updateDexNodes(){
 	echo "|----|------------------------|------------------------|------------------------------------------------|" >> $dex_fn
 	cx.aggMeta | cut -f "1 2 3 4" | sort -r -t $'\t' -k 2 | sed 's/^/|/' | sed 's/\t/|/g' | sed 's/$/|/' >> $dex_fn
 	echo "Updated $dex_fn."
+
+	cx.updateGit
 }
+
+#######################################
+# Update Git Repository
+#######################################
+function cx.updateGit(){
+	if [[ -d $CX_PATH/.git ]]; then
+		git -C $CX_PATH add -A
+		git -C $CX_PATH commit -m "Automatic backup commit $(date -u +'%Y%m%dT%H%M%SZ')"
+		git -C $CX_PATH push
+	fi
+}
+
+
