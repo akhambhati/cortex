@@ -249,6 +249,7 @@ function cx.updateDexNodes(){
 #######################################
 function cx.updateGit(){
 	if [[ -d $CX_PATH/.git ]]; then
+		git -C $CX_PATH pull
 		git -C $CX_PATH add -A
 		git -C $CX_PATH commit -m "Automatic backup commit $(date -u +'%Y%m%dT%H%M%SZ')"
 		git -C $CX_PATH push
