@@ -47,6 +47,8 @@ function cx.initNetwork() {
 # Get list of all nodes in the network.
 #######################################
 function cx.getNodes(){
+	cx.updateGit &>/dev/null
+
 	nodes=$(find $CX_PATH/* -maxdepth 1 -type d -printf '%f\n' |
 		grep -P "^_[a-zA-Z0-9]" |
 		sort)
@@ -65,6 +67,8 @@ function cx.grepTitle() {
 # Aggregate metadata from all nodes in cortex.
 #######################################
 function cx.aggMeta(){
+	cx.updateGit &>/dev/null
+
 	if [ -z "$(ls $CX_PATH/*/$CX_META)" ]; then
 		echo ""
 	else
@@ -86,6 +90,8 @@ function cx.aggMeta(){
 # Get requested node.
 #######################################
 function cx.getNodeID() {
+	cx.updateGit &>/dev/null
+
 	if [ "$1" = "first" ]; then
 		nodes=$(cx.aggMeta | sort -t $'\t' -k 2 | cut -f 1)
 		ID=$((echo $nodes) | cut -d ' ' -f 1)
@@ -127,6 +133,8 @@ function cx.genNodeID(){
 # Delete a node within the cortical network.
 #######################################
 function cx.nodeDel() {
+	cx.updateGit &>/dev/null
+
 	SEL_NODE=$(cx.getNodeID $1)
 	if [[ -z $SEL_NODE ]]; then
 		echo "Node ($SEL_NODE) does not exist."
@@ -144,6 +152,8 @@ function cx.nodeDel() {
 # Edit a node within the cortical network.
 #######################################
 function cx.nodeEdit() {
+	cx.updateGit &>/dev/null
+
 	SEL_NODE=$(cx.getNodeID $1)	
 	if [[ -z $SEL_NODE ]]; then
 		echo "Must specify a valid node ID."	
@@ -216,6 +226,8 @@ function cx.templateFill() {
 # Update metadata.
 #######################################
 function cx.updateMetadata() {
+	cx.updateGit &>/dev/null
+
 	MDATE=".$2 = \"$3\""
 	yq -i "$MDATE" $CX_PATH/$1/$CX_META
 	if [ "$2" == "modified" ]; then
@@ -229,6 +241,8 @@ function cx.updateMetadata() {
 # Update nodes index based on metadata.
 #######################################
 function cx.updateDexNodes(){
+	cx.updateGit &>/dev/null
+
 	dex_fn="$CX_PATH/$CX_DEX/nodes.md"
 	echo "|NODE|CREATED|MODIFIED|TITLE|" > $dex_fn
 	echo "|----|------------------------|------------------------|------------------------------------------------|" >> $dex_fn
